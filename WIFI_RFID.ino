@@ -11,9 +11,9 @@
 #define LED_R 25 // Red LED pin
 #define BUZZER 27 // Buzzer pin
 
-const char *ssid = "PhuongLinh_T1";
-const char *password = "phuonglinh99";
-const char *mqtt_server = "192.168.33.103";
+const char *ssid = "Longnh";
+const char *password = "long12345";
+const char *mqtt_server = "103.82.22.78";
 const char *mqtt_topic = "status";
 const int mqtt_port = 1883;  // Default MQTT port
 const char *mqtt_username = "longnh";
@@ -74,15 +74,6 @@ void loop() {
     Serial.println("Wi-Fi connection lost. Reconnecting...");
     connectToWiFi();
   }
-
-  // Reconnect to MQTT if not connected
-  if (!client.connected()) {
-    Serial.println("MQTT connection lost. Reconnecting...");
-    connectToMQTT();
-  }
-
-  // Handle MQTT connection in the main loop
-  client.loop();
 
   // Send door status to MQTT if one second has passed since the last message
   if (millis() - lastMQTTMessageTime >= mqttMessageInterval) {
@@ -167,8 +158,8 @@ void connectToWiFi() {
 
 void connectToMQTT() {
   while (!client.connected()) {
-    if (client.connect("ESP32Client", mqtt_username, mqtt_password)) {
-      Serial.println("Connected to MQTT broker");
+    if (client.connect("ESP32Client1", mqtt_username, mqtt_password)) {
+      Serial.println("Connected to MQTT broker - device1");
     } else {
       Serial.println("Failed to connect to MQTT broker, retrying in 5 seconds...");
       delay(5000);
@@ -192,7 +183,7 @@ int sendHTTPRequest(String cardUID) {
   }
 
   // Construct the URL with the card UID as a parameter
-  String url = "http://192.168.33.103:5000/api/gate";
+  String url = "https://api-smartgate.longnh-1951060826.tech/api/gate";
 
   // Include both card ID and MAC address in the request body
   String requestBody = "{\"cardId\":\"" + cardUID + "\",\"macAddress\":\"" + macAddress + "\"}";
